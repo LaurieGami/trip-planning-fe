@@ -1,6 +1,6 @@
 import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import useAccount from '../hooks/useAccount'
+import useAccount from '../../hooks/useAccount'
 
 function NavBar() {
     const { user, logout } = useAccount()

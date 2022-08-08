@@ -10,10 +10,11 @@ import { ApolloProvider } from '@apollo/client'
 import client from './graphql/client'
 import { AuthProvider } from './context/authContext'
 
-import Layout from './components/Layout'
+import Layout from './components/common/Layout'
 import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
+import CreateTripPage from './pages/CreateTripPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -26,6 +27,7 @@ root.render(
               <Route index element={<HomePage />} />
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
+              <Route path="create-trip" element={<CreateTripPage />} />
             </Route>
           </Routes>
         </React.StrictMode>

@@ -30,6 +30,7 @@ const registerSchema = yup.object({
 const REGISTER_USER = gql`
     mutation RegisterUser($registerInput: RegisterInput) {
         registerUser(registerInput: $registerInput) {
+            id
             email
             username
             token

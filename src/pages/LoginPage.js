@@ -22,6 +22,7 @@ const loginSchema = yup.object({
 const LOGIN_USER = gql`
     mutation LoginUser($loginInput: LoginInput) {
         loginUser(loginInput: $loginInput) {
+            id
             email
             username
             token
