@@ -1,11 +1,12 @@
-import { useContext, useState, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../context/authContext'
 import { gql, useMutation } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { TextField, Button, Container, Stack, Alert } from '@mui/material'
+import { TextField, Button, Container, Stack, Alert, IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const registerSchema = yup.object({
     username: yup
@@ -37,9 +38,11 @@ const REGISTER_USER = gql`
 `
 
 function RegisterPage() {
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
     const context = useContext(AuthContext)
     let navigate = useNavigate()
-    const [errors, setErrors] = useState([])
 
     const formik = useFormik({
         initialValues: {
@@ -54,27 +57,12 @@ function RegisterPage() {
         }
     })
 
-    const [registerUser, { data, loading }] = useMutation(REGISTER_USER, {
-        onError({ graphQLErrors, networkError }) {
-            if (graphQLErrors) {
-                graphQLErrors.map(({ message, locations, path }) =>
-                    console.log(
-                        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-                    )
-                )
-                setErrors(graphQLErrors)
-            }
-            if (networkError) console.log(`[Network error]: ${networkError}`)
-        }
-    })
-
-    useEffect(() => {
-        if (data) {
-            const { registerUser } = data
+    const [registerUser, { loading, error }] = useMutation(REGISTER_USER, {
+        onCompleted({ registerUser }) {
             context.login(registerUser)
             navigate('/')
         }
-    }, [data])
+    })
 
     return (
         <Container spacing={2} maxWidth="sm">
@@ -107,7 +95,16 @@ function RegisterPage() {
                         id="password"
                         name="password"
                         label="Password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
@@ -118,7 +115,16 @@ function RegisterPage() {
                         id="confirmPassword"
                         name="confirmPassword"
                         label="Confirm Password"
-                        type="password"
+                        type={showConfirmPassword ? 'text' : 'password'}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton edge="end" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                         value={formik.values.confirmPassword}
                         onChange={formik.handleChange}
                         error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
@@ -130,11 +136,9 @@ function RegisterPage() {
                     {loading && (
                         <Alert severity="info">Registering new user...</Alert>
                     )}
-                    {errors.map((error, i) => {
-                        return (
-                            <Alert key={`error-${i}`} severity="error">{error.message}</Alert>
-                        )
-                    })}
+                    {error && (
+                        <Alert severity="error">{error.message}</Alert>
+                    )}
                 </Stack>
             </form>
         </Container>

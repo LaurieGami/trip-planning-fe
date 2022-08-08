@@ -16,7 +16,7 @@ function NavBar() {
             <AppBar position="static" style={{ backgroundColor: 'orange' }}>
                 <Toolbar>
                     <Typography variant="h5" component="div">
-                        <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>App</Link>
+                        <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>Trip Planning App</Link>
                     </Typography>
                     <Box alignItems="right" sx={{ flexGrow: 1, textAlign: 'right' }}>
                         {user ?

@@ -1,11 +1,12 @@
-import { useContext, useEffect } from 'react'
+import { useContext, useState } from 'react'
 import { AuthContext } from '../context/authContext'
 import { gql, useMutation } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
-import { TextField, Button, Container, Stack, Alert } from '@mui/material'
+import { TextField, Button, Container, Stack, Alert, IconButton, InputAdornment } from '@mui/material'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
 
 const loginSchema = yup.object({
     email: yup
@@ -29,6 +30,8 @@ const LOGIN_USER = gql`
 `
 
 function LoginPage() {
+    const [showPassword, setShowPassword] = useState(false)
+
     const context = useContext(AuthContext)
     let navigate = useNavigate()
 
@@ -43,15 +46,12 @@ function LoginPage() {
         }
     })
 
-    const [loginUser, { data, loading, error }] = useMutation(LOGIN_USER)
-
-    useEffect(() => {
-        if (data) {
-            const { loginUser } = data
+    const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
+        onCompleted({ loginUser }) {
             context.login(loginUser)
             navigate('/')
         }
-    }, [data])
+    })
 
     return (
         <Container spacing={2} maxWidth="sm">
@@ -74,7 +74,16 @@ function LoginPage() {
                         id="password"
                         name="password"
                         label="Password"
-                        type="password"
+                        type={showPassword ? 'text' : 'password'}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton edge="end" onClick={() => setShowPassword(!showPassword)}>
+                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                    </IconButton>
+                                </InputAdornment>
+                            )
+                        }}
                         value={formik.values.password}
                         onChange={formik.handleChange}
                         error={formik.touched.password && Boolean(formik.errors.password)}
