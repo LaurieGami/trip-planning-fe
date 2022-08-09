@@ -15,6 +15,7 @@ import HomePage from './pages/HomePage'
 import RegisterPage from './pages/RegisterPage'
 import LoginPage from './pages/LoginPage'
 import CreateTripPage from './pages/CreateTripPage'
+import ParticipantsPage from './pages/ParticipantsPage'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
@@ -28,6 +29,7 @@ root.render(
               <Route path="login" element={<LoginPage />} />
               <Route path="register" element={<RegisterPage />} />
               <Route path="create-trip" element={<CreateTripPage />} />
+              <Route path="participants" element={<ParticipantsPage />} />
             </Route>
           </Routes>
         </React.StrictMode>
