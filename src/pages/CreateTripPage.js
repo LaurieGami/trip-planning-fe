@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
-// import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { useAccount } from "../context/authContext";
@@ -81,7 +81,7 @@ const GET_PARTICIPANTS = gql`
 `;
 
 function CreateTripPage() {
-  // let navigate = useNavigate()
+  let navigate = useNavigate()
   const { user } = useAccount();
 
   const [participants, setParticipants] = useState([]);
@@ -103,8 +103,9 @@ function CreateTripPage() {
 
   const [createTrip, { loading, error }] = useMutation(CREATE_TRIP, {
     onCompleted({ createTrip }) {
-      console.log("createTrip", createTrip);
-      // navigate('/')
+      // const { id } = createTrip
+      // navigate(`/dashboard/trips/${id}`)
+      navigate('/dashboard/trips')
     },
   });
 

@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { Link } from "react-router-dom";
 import { filter } from "lodash";
-// import { useNavigate } from 'react-router-dom'
-// import { filter } from 'lodash'
 import { useAccount } from "../context/authContext";
 
 import {
@@ -11,7 +8,6 @@ import {
   Table,
   Stack,
   Avatar,
-  Button,
   Checkbox,
   TableRow,
   TableBody,
@@ -21,12 +17,11 @@ import {
   TableContainer,
   TablePagination,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
 
 import Page from "../components/common/Page";
 import PageHeader from "../components/common/PageHeader";
-import AddParticipantButton from '../components/participant/AddParticipantButton'
 import SearchNotFound from "../components/common/SearchNotFound";
+import AddParticipantButton from '../components/participant/AddParticipantButton';
 import ParticipantTableHead from "../components/participant/ParticipantTableHead";
 import ParticipantTableToolbar from "../components/participant/ParticipantTableToolbar";
 import ParticipantMoreButton from "../components/participant/ParticipantMoreButton";
@@ -87,7 +82,6 @@ function applySortFilter(array, comparator, query) {
 }
 
 function ParticipantsPage() {
-  // let navigate = useNavigate()
   const { user } = useAccount();
 
   const [participants, setParticipants] = useState([]);

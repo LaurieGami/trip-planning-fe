@@ -22,7 +22,7 @@ import NavList from "../nav/NavList";
 const navConfig = [
   {
     title: 'Trips',
-    path: '/dashboard/create-trip',
+    path: '/dashboard/trips',
     icon: <Luggage />,
   },
   {

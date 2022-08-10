@@ -6,6 +6,8 @@ import DashboardLayout from "./DashboardLayout";
 import HomePage from "../../pages/HomePage";
 import RegisterPage from "../../pages/RegisterPage";
 import LoginPage from "../../pages/LoginPage";
+import TripsPage from "../../pages/TripsPage";
+import TripDetailsPage from "../../pages/TripDetailsPage";
 import CreateTripPage from "../../pages/CreateTripPage";
 import ParticipantsPage from "../../pages/ParticipantsPage";
 
@@ -27,6 +29,22 @@ function App() {
         }
       >
         <Route index element={<HomePage />} />
+        <Route
+          path="trips"
+          element={
+            <RequireAuth>
+              <TripsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="trips/:id"
+          element={
+            <RequireAuth>
+              <TripDetailsPage />
+            </RequireAuth>
+          }
+        />
         <Route
           path="create-trip"
           element={
