@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react'
-import { AuthContext } from '../context/authContext'
+import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAccount } from '../context/authContext'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
@@ -33,8 +33,11 @@ const LOGIN_USER = gql`
 function LoginPage() {
     const [showPassword, setShowPassword] = useState(false)
 
-    const context = useContext(AuthContext)
+    let { login } = useAccount()
     let navigate = useNavigate()
+    let location = useLocation()
+
+    let from = location.state?.from?.pathname || '/'
 
     const formik = useFormik({
         initialValues: {
@@ -49,8 +52,8 @@ function LoginPage() {
 
     const [loginUser, { loading, error }] = useMutation(LOGIN_USER, {
         onCompleted({ loginUser }) {
-            context.login(loginUser)
-            navigate('/')
+            login(loginUser)
+            navigate(from, { replace: true })
         }
     })
 

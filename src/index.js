@@ -1,39 +1,27 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import {
-  BrowserRouter,
-  Routes,
-  Route,
+  BrowserRouter
 } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import reportWebVitals from './reportWebVitals'
 import { ApolloProvider } from '@apollo/client'
 import client from './graphql/client'
 import { AuthProvider } from './context/authContext'
 
-import Layout from './components/common/Layout'
-import HomePage from './pages/HomePage'
-import RegisterPage from './pages/RegisterPage'
-import LoginPage from './pages/LoginPage'
-import CreateTripPage from './pages/CreateTripPage'
-import ParticipantsPage from './pages/ParticipantsPage'
+import App from './components/common/App'
 
 const root = ReactDOM.createRoot(document.getElementById('root'))
 root.render(
   <AuthProvider>
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <React.StrictMode>
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<HomePage />} />
-              <Route path="login" element={<LoginPage />} />
-              <Route path="register" element={<RegisterPage />} />
-              <Route path="create-trip" element={<CreateTripPage />} />
-              <Route path="participants" element={<ParticipantsPage />} />
-            </Route>
-          </Routes>
-        </React.StrictMode>
-      </BrowserRouter>
+      <HelmetProvider>
+        <BrowserRouter>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </BrowserRouter>
+      </HelmetProvider>
     </ApolloProvider>
   </AuthProvider>
 )

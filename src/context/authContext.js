@@ -1,4 +1,5 @@
-import React, { useReducer, createContext } from 'react'
+import React, { useReducer, createContext, useContext } from 'react'
+import { useLocation, Navigate } from 'react-router-dom'
 import jwtDecode from 'jwt-decode'
 
 const initialState = {
@@ -19,12 +20,12 @@ if (token) {
 
 const AuthContext = createContext({
     user: null,
-    login: (userData) => {},
-    logout: () => {}
+    login: (userData) => { },
+    logout: () => { }
 })
 
 function authReducer(state, action) {
-    switch(action.type) {
+    switch (action.type) {
         case 'LOGIN':
             return {
                 ...state,
@@ -64,4 +65,20 @@ function AuthProvider(props) {
     )
 }
 
-export { AuthContext, AuthProvider }
+function useAccount() {
+    const accountInfo = useContext(AuthContext)
+    return accountInfo
+}
+
+function RequireAuth({ children }) {
+    let { user } = useAccount()
+    let location = useLocation()
+
+    if (!user) {
+        return <Navigate to="/login" state={{ from: location }} replace />
+    }
+
+    return children
+}
+
+export { AuthContext, AuthProvider, useAccount, RequireAuth }

@@ -1,4 +1,4 @@
-import useAccount from '../hooks/useAccount'
+import { useAccount } from '../context/authContext'
 
 function HomePage() {
     const { user } = useAccount()

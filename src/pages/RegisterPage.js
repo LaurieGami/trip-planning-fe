@@ -1,7 +1,7 @@
-import { useContext, useState } from 'react'
-import { AuthContext } from '../context/authContext'
+import { useState } from 'react'
 import { gql, useMutation } from '@apollo/client'
 import { useNavigate } from 'react-router-dom'
+import { useAccount } from '../context/authContext'
 import { useFormik } from 'formik'
 import * as yup from 'yup'
 
@@ -42,7 +42,7 @@ function RegisterPage() {
     const [showPassword, setShowPassword] = useState(false)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false)
 
-    const context = useContext(AuthContext)
+    let { login } = useAccount()
     let navigate = useNavigate()
 
     const formik = useFormik({
@@ -60,7 +60,7 @@ function RegisterPage() {
 
     const [registerUser, { loading, error }] = useMutation(REGISTER_USER, {
         onCompleted({ registerUser }) {
-            context.login(registerUser)
+            login(registerUser)
             navigate('/')
         }
     })

@@ -1,6 +1,6 @@
 import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import useAccount from '../../hooks/useAccount'
+import { useAccount } from '../../context/authContext'
 
 function NavBar() {
     const { user, logout } = useAccount()
@@ -13,7 +13,7 @@ function NavBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" style={{ backgroundColor: 'orange' }}>
+            <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h5" component="div">
                         <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>Trip Planning App</Link>

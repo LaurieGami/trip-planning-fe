@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { filter } from 'lodash'
 // import { useNavigate } from 'react-router-dom'
 // import { filter } from 'lodash'
-import useAccount from '../hooks/useAccount'
+import { useAccount } from '../context/authContext'
 
 import {
     Card,
@@ -23,6 +23,7 @@ import {
 } from '@mui/material'
 import { Add } from '@mui/icons-material'
 
+import Page from '../components/common/Page'
 // import AddParticipantButton from '../components/participant/AddParticipantButton'
 import SearchNotFound from '../components/common/SearchNotFound'
 import ParticipantTableHead from '../components/participant/ParticipantTableHead'
@@ -159,94 +160,91 @@ function ParticipantsPage() {
     })
 
     return (
-        <Container>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                <Typography variant="h4" gutterBottom>
-                    Participants
-                </Typography>
-                <Button variant="contained" component={Link} to="#" startIcon={<Add />}>
-                    New Participant
-                </Button>
-            </Stack>
-
-            <Card>
-                <ParticipantTableToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
-                <TableContainer sx={{ minWidth: 800 }}>
-                    <Table>
-                        <ParticipantTableHead
-                            order={order}
-                            orderBy={orderBy}
-                            headLabel={TABLE_HEAD}
-                            rowCount={filteredParticipants.length}
-                            numSelected={selected.length}
-                            onRequestSort={handleRequestSort}
-                            onSelectAllClick={handleSelectAllClick}
-                        />
-                        <TableBody>
-                            {filteredParticipants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                // const { id, name, role, status, company, avatarUrl, isVerified } = row
-                                const { id, firstName, lastName } = row
-                                const isItemSelected = selected.indexOf(id) !== -1
-
-                                return (
-                                    <TableRow
-                                        hover
-                                        key={id}
-                                        tabIndex={-1}
-                                        role="checkbox"
-                                        selected={isItemSelected}
-                                        aria-checked={isItemSelected}
-                                    >
-                                        <TableCell padding="checkbox">
-                                            <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
-                                        </TableCell>
-                                        <TableCell component="th" scope="row" padding="none">
-                                            <Stack direction="row" alignItems="center" spacing={2}>
-                                                <Avatar alt={`${firstName} ${lastName}`} />
-                                                <Typography variant="subtitle2" noWrap>
-                                                    {`${firstName} ${lastName}`}
-                                                </Typography>
-                                            </Stack>
-                                        </TableCell>
-                                        <TableCell align="left">{firstName}</TableCell>
-                                        <TableCell align="left">{lastName}</TableCell>
-                                        <TableCell align="right">
-                                            <ParticipantMoreButton />
+        <Page title="Participants">
+            <Container>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                    <Typography variant="h4" gutterBottom>
+                        Participants
+                    </Typography>
+                    <Button variant="contained" component={Link} to="#" startIcon={<Add />}>
+                        New Participant
+                    </Button>
+                </Stack>
+                <Card>
+                    <ParticipantTableToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+                    <TableContainer sx={{ minWidth: 800 }}>
+                        <Table>
+                            <ParticipantTableHead
+                                order={order}
+                                orderBy={orderBy}
+                                headLabel={TABLE_HEAD}
+                                rowCount={filteredParticipants.length}
+                                numSelected={selected.length}
+                                onRequestSort={handleRequestSort}
+                                onSelectAllClick={handleSelectAllClick}
+                            />
+                            <TableBody>
+                                {filteredParticipants.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                    // const { id, name, role, status, company, avatarUrl, isVerified } = row
+                                    const { id, firstName, lastName } = row
+                                    const isItemSelected = selected.indexOf(id) !== -1
+                                    return (
+                                        <TableRow
+                                            hover
+                                            key={id}
+                                            tabIndex={-1}
+                                            role="checkbox"
+                                            selected={isItemSelected}
+                                            aria-checked={isItemSelected}
+                                        >
+                                            <TableCell padding="checkbox">
+                                                <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
+                                            </TableCell>
+                                            <TableCell component="th" scope="row" padding="none">
+                                                <Stack direction="row" alignItems="center" spacing={2}>
+                                                    <Avatar alt={`${firstName} ${lastName}`} />
+                                                    <Typography variant="subtitle2" noWrap>
+                                                        {`${firstName} ${lastName}`}
+                                                    </Typography>
+                                                </Stack>
+                                            </TableCell>
+                                            <TableCell align="left">{firstName}</TableCell>
+                                            <TableCell align="left">{lastName}</TableCell>
+                                            <TableCell align="right">
+                                                <ParticipantMoreButton />
+                                            </TableCell>
+                                        </TableRow>
+                                    )
+                                })}
+                                {emptyRows > 0 && (
+                                    <TableRow style={{ height: 53 * emptyRows }}>
+                                        <TableCell colSpan={6} />
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                            {isParticipantNotFound && (
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                                            <SearchNotFound searchQuery={filterName} />
                                         </TableCell>
                                     </TableRow>
-                                )
-                            })}
-                            {emptyRows > 0 && (
-                                <TableRow style={{ height: 53 * emptyRows }}>
-                                    <TableCell colSpan={6} />
-                                </TableRow>
+                                </TableBody>
                             )}
-                        </TableBody>
-
-                        {isParticipantNotFound && (
-                            <TableBody>
-                                <TableRow>
-                                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                                        <SearchNotFound searchQuery={filterName} />
-                                    </TableCell>
-                                </TableRow>
-                            </TableBody>
-                        )}
-                    </Table>
-                </TableContainer>
-
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={participants.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Card>
-        </Container>
+                        </Table>
+                    </TableContainer>
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={participants.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
+                </Card>
+            </Container>
+        </Page>
     )
 }
 
