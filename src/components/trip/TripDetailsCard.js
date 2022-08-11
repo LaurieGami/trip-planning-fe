@@ -11,7 +11,7 @@ import {
   ListItemIcon,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { Person, Save } from "@mui/icons-material";
+import { Person } from "@mui/icons-material";
 
 import Label from "../common/Label";
 import TripForm from "../form/TripForm";
@@ -51,7 +51,6 @@ function TripDetailsCard({
   updateStatus = null,
 }) {
   const {
-    id,
     title,
     createdAt,
     departureDate,
@@ -106,8 +105,8 @@ function TripDetailsCard({
         >
           {createdAt && (
             <Typography variant="subtitle2">
-                Created at: {dateToDateAndTime(createdAt).date} at{" "}
-                {dateToDateAndTime(createdAt).time}
+              Created at: {dateToDateAndTime(createdAt).date} at{" "}
+              {dateToDateAndTime(createdAt).time}
             </Typography>
           )}
           {updatedAt && (

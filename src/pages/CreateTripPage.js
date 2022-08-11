@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "../context/authContext";
 
@@ -30,36 +29,9 @@ const CREATE_TRIP = gql`
   }
 `;
 
-const GET_PARTICIPANTS = gql`
-  query GetParticipants($userId: ID!) {
-    getParticipants(userId: $userId) {
-      id
-      firstName
-      lastName
-    }
-  }
-`;
-
 function CreateTripPage() {
   let navigate = useNavigate();
   const { user } = useAccount();
-
-  const [participants, setParticipants] = useState([]);
-
-  useQuery(GET_PARTICIPANTS, {
-    variables: { userId: user.id },
-    onCompleted({ getParticipants }) {
-      setParticipants(
-        getParticipants.map((participant) => {
-          return {
-            id: participant.id,
-            firstName: participant.firstName,
-            lastName: participant.lastName,
-          };
-        })
-      );
-    },
-  });
 
   const [createTrip, { loading, error }] = useMutation(CREATE_TRIP, {
     onCompleted({ createTrip }) {

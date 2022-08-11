@@ -7,11 +7,9 @@ import { styled } from "@mui/material/styles";
 import {
   Box,
   Link,
-  Button,
   Drawer,
   Typography,
   Avatar,
-  Stack,
 } from "@mui/material";
 import { Luggage, Groups, Login, Logout } from "@mui/icons-material";
 import useResponsive from "../../hooks/useResponsive";

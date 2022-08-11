@@ -34,7 +34,10 @@ function ParticipantMoreButton({ participant, userId }) {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem sx={{ color: "text.secondary" }} onClick={() => setIsDeleteOpen(true)}>
+        <MenuItem
+          sx={{ color: "text.secondary" }}
+          onClick={() => setIsDeleteOpen(true)}
+        >
           <ListItemIcon>
             <Delete />
           </ListItemIcon>
@@ -73,4 +76,4 @@ ParticipantMoreButton.propTypes = {
   userId: PropTypes.string.isRequired,
 };
 
-export default ParticipantMoreButton
+export default ParticipantMoreButton;

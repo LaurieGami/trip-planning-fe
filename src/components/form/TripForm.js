@@ -6,7 +6,14 @@ import * as yup from "yup";
 import { useAccount } from "../../context/authContext";
 import { sortBy } from "lodash";
 
-import { TextField, Stack, Autocomplete, Alert, Button, Box } from "@mui/material";
+import {
+  TextField,
+  Stack,
+  Autocomplete,
+  Alert,
+  Button,
+  Box,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
@@ -66,7 +73,7 @@ function TripForm({
   useQuery(GET_PARTICIPANTS, {
     variables: { userId: user.id },
     onCompleted({ getParticipants }) {
-      setParticipants(sortBy(getParticipants, ['firstName']));
+      setParticipants(sortBy(getParticipants, ["firstName"]));
     },
   });
 
@@ -78,7 +85,14 @@ function TripForm({
         handleSubmit(values);
       }}
     >
-      {({ values, handleChange, setFieldValue, errors, touched, resetForm }) => (
+      {({
+        values,
+        handleChange,
+        setFieldValue,
+        errors,
+        touched,
+        resetForm,
+      }) => (
         <Form>
           <Stack spacing={2} paddingBottom={2}>
             <TextField
@@ -146,7 +160,9 @@ function TripForm({
               id="participants"
               name="participants"
               options={participants}
-              getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+              getOptionLabel={(option) =>
+                `${option.firstName} ${option.lastName}`
+              }
               value={values.participants}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={(_event, value) => {
@@ -157,24 +173,24 @@ function TripForm({
               )}
             />
             {error && <Alert severity="error">{error.message}</Alert>}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button
-                    sx={{ mr: 2 }}
-                    onClick={() => {
-                        resetForm()
-                        setEditing(false)
-                    }}
-                >
-                    Cancel
-                </Button>
-                <LoadingButton
-                  color="primary"
-                  variant="contained"
-                  loading={loading}
-                  type="submit"
-                >
-                  {type === "create" ? "Create Trip" : "Update Trip"}
-                </LoadingButton>
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                sx={{ mr: 2 }}
+                onClick={() => {
+                  resetForm();
+                  setEditing(false);
+                }}
+              >
+                Cancel
+              </Button>
+              <LoadingButton
+                color="primary"
+                variant="contained"
+                loading={loading}
+                type="submit"
+              >
+                {type === "create" ? "Create Trip" : "Update Trip"}
+              </LoadingButton>
             </Box>
           </Stack>
         </Form>

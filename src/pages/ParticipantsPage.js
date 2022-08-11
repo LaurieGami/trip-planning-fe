@@ -230,7 +230,10 @@ function ParticipantsPage() {
                         <TableCell align="left">{firstName}</TableCell>
                         <TableCell align="left">{lastName}</TableCell>
                         <TableCell align="right">
-                          <ParticipantMoreButton participant={row} userId={user.id}/>
+                          <ParticipantMoreButton
+                            participant={row}
+                            userId={user.id}
+                          />
                         </TableCell>
                       </TableRow>
                     );

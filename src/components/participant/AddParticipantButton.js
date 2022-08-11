@@ -59,13 +59,21 @@ function AddParticipantButton({ userId }) {
     CREATE_PARTICIPANT,
     {
       update(cache, { data: { createParticipant } }) {
-        const { getParticipants } = cache.readQuery({ query: GET_PARTICIPANTS, variables: { userId } });
+        const { getParticipants } = cache.readQuery({
+          query: GET_PARTICIPANTS,
+          variables: { userId },
+        });
         cache.writeQuery({
           query: GET_PARTICIPANTS,
           variables: { userId },
-          data: { getParticipants: sortBy([ ...getParticipants, createParticipant ], ['firstName']) },
+          data: {
+            getParticipants: sortBy(
+              [...getParticipants, createParticipant],
+              ["firstName"]
+            ),
+          },
         });
-      }
+      },
     }
   );
 

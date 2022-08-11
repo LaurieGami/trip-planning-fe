@@ -26,9 +26,8 @@ export default function ParticipantTableToolbar({
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        alignItems: 'center',
-        height: '100px'
-
+        alignItems: "center",
+        height: "100px",
       }}
     >
       {numSelected > 0 ? (
