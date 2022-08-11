@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { format } from "date-fns";
 
 import {
   Box,
@@ -8,12 +9,19 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  Button,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { Person, Save } from "@mui/icons-material";
 
 import Label from "../common/Label";
+import TripForm from "../form/TripForm";
+
+function dateToDateAndTime(date) {
+  return {
+    date: format(date, "PP"),
+    time: format(date, "p"),
+  };
+}
 
 const CoverImgStyle = styled("img")({
   top: 0,
@@ -35,7 +43,13 @@ const OverlayBoxStyle = styled(Box)({
   zIndex: 8,
 });
 
-function TripDetailsCard({ trip, editing = false, onSave = () => {} }) {
+function TripDetailsCard({
+  trip,
+  editing = false,
+  setEditing = () => {},
+  handleUpdate = () => {},
+  updateStatus = null,
+}) {
   const {
     id,
     title,
@@ -90,12 +104,16 @@ function TripDetailsCard({ trip, editing = false, onSave = () => {} }) {
             justifyContent: "space-between",
           }}
         >
-          <Typography variant="subtitle2">
-            Created at: {createdAt.date} at {createdAt.time}
-          </Typography>
+          {createdAt && (
+            <Typography variant="subtitle2">
+                Created at: {dateToDateAndTime(createdAt).date} at{" "}
+                {dateToDateAndTime(createdAt).time}
+            </Typography>
+          )}
           {updatedAt && (
             <Typography variant="subtitle2">
-              Last updated at: {updatedAt.date} at {updatedAt.time}
+              Last updated at: {dateToDateAndTime(updatedAt).date} at{" "}
+              {dateToDateAndTime(updatedAt).time}
             </Typography>
           )}
         </Box>
@@ -106,10 +124,10 @@ function TripDetailsCard({ trip, editing = false, onSave = () => {} }) {
               {departureDate ? (
                 <>
                   <Typography variant="body1">
-                    Date: {departureDate.date}
+                    Date: {dateToDateAndTime(departureDate).date}
                   </Typography>
                   <Typography variant="body1">
-                    Time: {departureDate.time}
+                    Time: {dateToDateAndTime(departureDate).time}
                   </Typography>
                 </>
               ) : (
@@ -124,10 +142,10 @@ function TripDetailsCard({ trip, editing = false, onSave = () => {} }) {
               {returnDate ? (
                 <>
                   <Typography variant="body1">
-                    Date: {returnDate.date}
+                    Date: {dateToDateAndTime(returnDate).date}
                   </Typography>
                   <Typography variant="body1">
-                    Time: {returnDate.time}
+                    Time: {dateToDateAndTime(returnDate).time}
                   </Typography>
                 </>
               ) : (
@@ -161,16 +179,14 @@ function TripDetailsCard({ trip, editing = false, onSave = () => {} }) {
             </Box>
           </>
         ) : (
-          <>
-            <Box>Editing...</Box>
-            <Button
-              variant="contained"
-              startIcon={<Save />}
-              onClick={() => onSave({ id: "test" })}
-            >
-              Save
-            </Button>
-          </>
+          <TripForm
+            type="update"
+            tripValues={trip}
+            handleSubmit={handleUpdate}
+            setEditing={setEditing}
+            loading={updateStatus?.loading}
+            error={updateStatus?.error}
+          />
         )}
       </Stack>
     </Card>
@@ -180,7 +196,8 @@ function TripDetailsCard({ trip, editing = false, onSave = () => {} }) {
 TripDetailsCard.propTypes = {
   trip: PropTypes.object.isRequired,
   editing: PropTypes.bool,
-  setTripUpdate: PropTypes.func,
+  setEditing: PropTypes.func,
+  handleUpdate: PropTypes.func,
 };
 
 export default TripDetailsCard;

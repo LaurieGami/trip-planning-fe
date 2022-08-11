@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { gql, useQuery, useMutation } from "@apollo/client";
-import { format } from "date-fns";
 // import { useAccount } from "../context/authContext";
 
 import { Container, Button } from "@mui/material";
@@ -12,12 +11,8 @@ import PageHeader from "../components/common/PageHeader";
 import Loading from "../components/common/Loading";
 import TripDetailsCard from "../components/trip/TripDetailsCard";
 
-function formatDateToDateAndTime(date) {
-  const newDate = new Date(parseInt(date));
-  return {
-    date: format(newDate, "PP"),
-    time: format(newDate, "p"),
-  };
+function stringToDate(date) {
+  return new Date(parseInt(date));
 }
 
 const GET_TRIP = gql`
@@ -73,30 +68,40 @@ function TripDetailsPage() {
     variables: { id },
   });
 
-  const [updateTrip] = useMutation(UPDATE_TRIP);
+  const [updateTrip, updatedTrip] = useMutation(UPDATE_TRIP, {
+    onCompleted({ updateTrip }) {
+      setEditing(false);
+    },
+  });
 
-  function handleSave(tripUpdate) {
-    console.log("SAVED tripUpdate", tripUpdate);
-    // updateTrip({ variables: { id, updateTrip: tripUpdate }})
-    setEditing(false);
+  function handleUpdate(values) {
+    const tripUpdateInput = {
+      title: values.title,
+      departureDate: values.departureDate ? values.departureDate : null,
+      returnDate: values.returnDate ? values.returnDate : null,
+      location: values.location ? values.location : null,
+      participants:
+        values.participants.length > 0
+          ? values.participants.map((p) => p.id)
+          : null,
+    };
+    updateTrip({ variables: { id, tripUpdateInput } });
   }
 
   useEffect(() => {
     if (data) {
-      const { getTrip: trip } = data;
+      const { getTrip } = data;
 
       const formattedTrip = {
-        ...trip,
-        createdAt: formatDateToDateAndTime(trip.createdAt),
-        departureDate: trip.departureDate
-          ? formatDateToDateAndTime(trip.departureDate)
+        ...getTrip,
+        createdAt: stringToDate(getTrip.createdAt),
+        departureDate: getTrip.departureDate
+          ? stringToDate(getTrip.departureDate)
           : null,
-        returnDate: trip.returnDate
-          ? formatDateToDateAndTime(trip.returnDate)
+        returnDate: getTrip.returnDate
+          ? stringToDate(getTrip.returnDate)
           : null,
-        updatedAt: trip.updatedAt
-          ? formatDateToDateAndTime(trip.updatedAt)
-          : null,
+        updatedAt: getTrip.updatedAt ? stringToDate(getTrip.updatedAt) : null,
       };
 
       setTrip(formattedTrip);
@@ -127,7 +132,9 @@ function TripDetailsPage() {
             <TripDetailsCard
               trip={trip}
               editing={editing}
-              onSave={handleSave}
+              setEditing={setEditing}
+              handleUpdate={handleUpdate}
+              updateStatus={updatedTrip || null}
             />
           </>
         )}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
+import { sortBy } from "lodash";
 
 import {
   TextField,
@@ -37,6 +38,16 @@ const CREATE_PARTICIPANT = gql`
   }
 `;
 
+const GET_PARTICIPANTS = gql`
+  query GetParticipants($userId: ID!) {
+    getParticipants(userId: $userId) {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
 function AddParticipantButton({ userId }) {
   const [open, toggleOpen] = useState(false);
 
@@ -47,9 +58,15 @@ function AddParticipantButton({ userId }) {
   const [createParticipant, { loading, error }] = useMutation(
     CREATE_PARTICIPANT,
     {
-      onCompleted({ createParticipant }) {
-        console.log("createParticipant", createParticipant);
-      },
+      update(cache, { data: { createParticipant } }) {
+        console.log(cache.data.data)
+        const { getParticipants } = cache.readQuery({ query: GET_PARTICIPANTS, variables: { userId } });
+        cache.writeQuery({
+          query: GET_PARTICIPANTS,
+          variables: { userId },
+          data: { getParticipants: sortBy([ ...getParticipants, createParticipant ], ['firstName']) },
+        });
+      }
     }
   );
 
