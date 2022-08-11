@@ -59,7 +59,6 @@ function AddParticipantButton({ userId }) {
     CREATE_PARTICIPANT,
     {
       update(cache, { data: { createParticipant } }) {
-        console.log(cache.data.data)
         const { getParticipants } = cache.readQuery({ query: GET_PARTICIPANTS, variables: { userId } });
         cache.writeQuery({
           query: GET_PARTICIPANTS,
@@ -99,7 +98,7 @@ function AddParticipantButton({ userId }) {
         >
           {({ values, handleChange, errors, touched }) => (
             <Form>
-              <DialogTitle>Add New Participant</DialogTitle>
+              <DialogTitle sx={{ pt: 3 }}>Add New Participant</DialogTitle>
               <DialogContent>
                 <DialogContentText>
                   Did you miss someone? Please, add them!
@@ -127,7 +126,12 @@ function AddParticipantButton({ userId }) {
                   />
                 </Stack>
               </DialogContent>
-              <DialogActions sx={{ padding: "8px 24px 16px" }}>
+              {error && (
+                <Box sx={{ px: 3 }}>
+                  <Alert severity="error">{error.message}</Alert>
+                </Box>
+              )}
+              <DialogActions sx={{ pt: 1, px: 3, pb: 3 }}>
                 <Button onClick={handleClose}>Cancel</Button>
                 <LoadingButton
                   color="primary"
@@ -137,7 +141,6 @@ function AddParticipantButton({ userId }) {
                 >
                   Add Participant
                 </LoadingButton>
-                {error && <Alert severity="error">{error.message}</Alert>}
               </DialogActions>
             </Form>
           )}

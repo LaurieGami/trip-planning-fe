@@ -146,7 +146,7 @@ function TripForm({
               id="participants"
               name="participants"
               options={participants}
-              getOptionLabel={(option) => option.firstName}
+              getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
               value={values.participants}
               isOptionEqualToValue={(option, value) => option.id === value.id}
               onChange={(_event, value) => {

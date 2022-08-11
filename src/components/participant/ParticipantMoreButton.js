@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import { useRef, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -10,9 +11,12 @@ import {
 } from "@mui/material";
 import { MoreVert, Delete, Edit } from "@mui/icons-material";
 
-export default function ParticipantMoreButton() {
+import DeleteParticipantDialog from "./DeleteParticipantDialog";
+
+function ParticipantMoreButton({ participant, userId }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
   return (
     <>
@@ -30,7 +34,7 @@ export default function ParticipantMoreButton() {
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <MenuItem sx={{ color: "text.secondary" }}>
+        <MenuItem sx={{ color: "text.secondary" }} onClick={() => setIsDeleteOpen(true)}>
           <ListItemIcon>
             <Delete />
           </ListItemIcon>
@@ -54,6 +58,19 @@ export default function ParticipantMoreButton() {
           />
         </MenuItem>
       </Menu>
+      <DeleteParticipantDialog
+        participant={participant}
+        userId={userId}
+        open={isDeleteOpen}
+        handleClose={setIsDeleteOpen}
+      />
     </>
   );
 }
+
+ParticipantMoreButton.propTypes = {
+  participant: PropTypes.object.isRequired,
+  userId: PropTypes.string.isRequired,
+};
+
+export default ParticipantMoreButton
