@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-import { Grid } from '@mui/material';
-import TripCard from './TripCard';
+import { Grid } from "@mui/material";
+import TripCard from "./TripCard";
 
 function TripList({ trips, ...other }) {
   return (
@@ -16,7 +16,7 @@ function TripList({ trips, ...other }) {
 }
 
 TripList.propTypes = {
-  trips: PropTypes.array.isRequired
+  trips: PropTypes.array.isRequired,
 };
 
-export default TripList
+export default TripList;

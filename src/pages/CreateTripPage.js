@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { gql, useQuery, useMutation } from "@apollo/client";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import { useAccount } from "../context/authContext";
@@ -18,8 +18,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-import Page from "../components/common/Page"
-import PageHeader from "../components/common/PageHeader"
+import Page from "../components/common/Page";
+import PageHeader from "../components/common/PageHeader";
 import AddParticipantButton from "../components/participant/AddParticipantButton";
 
 const tripSchema = yup.object({
@@ -81,7 +81,7 @@ const GET_PARTICIPANTS = gql`
 `;
 
 function CreateTripPage() {
-  let navigate = useNavigate()
+  let navigate = useNavigate();
   const { user } = useAccount();
 
   const [participants, setParticipants] = useState([]);
@@ -105,7 +105,7 @@ function CreateTripPage() {
     onCompleted({ createTrip }) {
       // const { id } = createTrip
       // navigate(`/dashboard/trips/${id}`)
-      navigate('/dashboard/trips')
+      navigate("/dashboard/trips");
     },
   });
 
@@ -172,7 +172,9 @@ function CreateTripPage() {
                         error={
                           touched.departureDate && Boolean(errors.departureDate)
                         }
-                        helperText={touched.departureDate && errors.departureDate}
+                        helperText={
+                          touched.departureDate && errors.departureDate
+                        }
                       />
                     )}
                   />

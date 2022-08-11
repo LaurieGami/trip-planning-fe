@@ -13,7 +13,7 @@ import {
   Alert,
   IconButton,
   InputAdornment,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -80,9 +80,11 @@ function RegisterPage() {
     <Page title="Register">
       <Container>
         <Typography variant="h4" gutterBottom>
-              Register
+          Register
         </Typography>
-        <Typography variant="subtitle1" gutterBottom>Register with the form below to create an account.</Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          Register with the form below to create an account.
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <Stack spacing={2} paddingTop={2} paddingBottom={2}>
             <TextField
@@ -139,7 +141,9 @@ function RegisterPage() {
                   <InputAdornment position="end">
                     <IconButton
                       edge="end"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
                     >
                       {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>

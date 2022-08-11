@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { ApolloProvider } from "@apollo/client";
 import client from "./graphql/client";
 import { AuthProvider } from "./context/authContext";
-import ThemeProvider from './theme';
+import ThemeProvider from "./theme";
 
 import App from "./components/common/App";
 

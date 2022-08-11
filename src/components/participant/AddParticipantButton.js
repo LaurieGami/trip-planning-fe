@@ -87,7 +87,7 @@ function AddParticipantButton({ userId }) {
                 <DialogContentText>
                   Did you miss someone? Please, add them!
                 </DialogContentText>
-                <Stack spacing={2} sx={{ paddingTop: '8px' }}>
+                <Stack spacing={2} sx={{ paddingTop: "8px" }}>
                   <TextField
                     fullWidth
                     id="firstName"
@@ -110,7 +110,7 @@ function AddParticipantButton({ userId }) {
                   />
                 </Stack>
               </DialogContent>
-              <DialogActions sx={{ padding: '8px 24px 16px' }}>
+              <DialogActions sx={{ padding: "8px 24px 16px" }}>
                 <Button onClick={handleClose}>Cancel</Button>
                 <LoadingButton
                   color="primary"

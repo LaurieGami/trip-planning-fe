@@ -13,7 +13,7 @@ import {
   Avatar,
   Stack,
 } from "@mui/material";
-import { Luggage, Groups, Login, Logout } from '@mui/icons-material';
+import { Luggage, Groups, Login, Logout } from "@mui/icons-material";
 import useResponsive from "../../hooks/useResponsive";
 
 import Logo from "./Logo";
@@ -21,23 +21,23 @@ import NavList from "../nav/NavList";
 
 const navConfig = [
   {
-    title: 'Trips',
-    path: '/dashboard/trips',
+    title: "Trips",
+    path: "/dashboard/trips",
     icon: <Luggage />,
   },
   {
-    title: 'Participants',
-    path: '/dashboard/participants',
+    title: "Participants",
+    path: "/dashboard/participants",
     icon: <Groups />,
   },
   {
-    title: 'Login',
-    path: '/login',
+    title: "Login",
+    path: "/login",
     icon: <Login />,
   },
   {
-    title: 'Register',
-    path: '/register',
+    title: "Register",
+    path: "/register",
     icon: <Logout />,
   },
 ];
@@ -80,18 +80,20 @@ function Sidebar({ isOpenSidebar, onCloseSidebar }) {
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none" component={RouterLink} to="#">
-          {user && (<AccountStyle>
-            {/* <Avatar src={user.photoURL} alt="photoURL" /> */}
-            <Avatar alt="photoURL" />
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
-                {user.email}
-              </Typography>
-              <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                {user.email}
-              </Typography>
-            </Box>
-          </AccountStyle>)}
+          {user && (
+            <AccountStyle>
+              {/* <Avatar src={user.photoURL} alt="photoURL" /> */}
+              <Avatar alt="photoURL" />
+              <Box sx={{ ml: 2 }}>
+                <Typography variant="subtitle2" sx={{ color: "text.primary" }}>
+                  {user.email}
+                </Typography>
+                <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                  {user.email}
+                </Typography>
+              </Box>
+            </AccountStyle>
+          )}
         </Link>
       </Box>
 

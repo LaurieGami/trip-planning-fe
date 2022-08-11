@@ -13,7 +13,7 @@ import {
   Alert,
   IconButton,
   InputAdornment,
-  Typography
+  Typography,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
@@ -74,7 +74,9 @@ function LoginPage() {
         <Typography variant="h4" gutterBottom>
           Login
         </Typography>
-        <Typography variant="subtitle1" gutterBottom>Login with the form below to access your account.</Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          Login with the form below to access your account.
+        </Typography>
         <form onSubmit={formik.handleSubmit}>
           <Stack spacing={2} paddingBottom={2}>
             <TextField

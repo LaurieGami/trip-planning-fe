@@ -21,7 +21,7 @@ import {
 import Page from "../components/common/Page";
 import PageHeader from "../components/common/PageHeader";
 import SearchNotFound from "../components/common/SearchNotFound";
-import AddParticipantButton from '../components/participant/AddParticipantButton';
+import AddParticipantButton from "../components/participant/AddParticipantButton";
 import ParticipantTableHead from "../components/participant/ParticipantTableHead";
 import ParticipantTableToolbar from "../components/participant/ParticipantTableToolbar";
 import ParticipantMoreButton from "../components/participant/ParticipantMoreButton";
@@ -174,9 +174,7 @@ function ParticipantsPage() {
         <PageHeader
           type="button"
           title="Participants"
-          button={
-            <AddParticipantButton userId={user.id} />
-          }
+          button={<AddParticipantButton userId={user.id} />}
         />
         <Card>
           <ParticipantTableToolbar

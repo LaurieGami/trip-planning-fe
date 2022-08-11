@@ -1,98 +1,139 @@
 import { useEffect, useState } from "react";
-import { Link as RouterLink, useParams } from 'react-router-dom';
-import { gql, useQuery } from "@apollo/client";
+import { useParams } from "react-router-dom";
+import { gql, useQuery, useMutation } from "@apollo/client";
+import { format } from "date-fns";
 // import { useAccount } from "../context/authContext";
 
-import {
-    Container,
-    Button,
-    CircularProgress
-} from "@mui/material";
+import { Container, Button } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 
 import Page from "../components/common/Page";
 import PageHeader from "../components/common/PageHeader";
-import Loading from "../components/common/Loading"
-import TripList from "../components/trip/TripList";
+import Loading from "../components/common/Loading";
+import TripDetailsCard from "../components/trip/TripDetailsCard";
+
+function formatDateToDateAndTime(date) {
+  const newDate = new Date(parseInt(date));
+  return {
+    date: format(newDate, "PP"),
+    time: format(newDate, "p"),
+  };
+}
 
 const GET_TRIP = gql`
   query GetTrip($id: ID!) {
     getTrip(id: $id) {
+      id
+      title
+      createdBy
+      createdAt
+      departureDate
+      returnDate
+      location
+      participants {
         id
-        title
-        createdBy
-        createdAt
-        departureDate
-        returnDate
-        location
-        participants {
-            id
-            firstName
-            lastName
-        }
-        tripStatus
-        updatedAt
+        firstName
+        lastName
+      }
+      tripStatus
+      updatedAt
+    }
+  }
+`;
+
+const UPDATE_TRIP = gql`
+  mutation UpdateTrip($id: ID!, $tripUpdateInput: TripUpdateInput) {
+    updateTrip(id: $id, tripUpdateInput: $tripUpdateInput) {
+      id
+      title
+      createdBy
+      createdAt
+      departureDate
+      returnDate
+      location
+      participants {
+        id
+        firstName
+        lastName
+      }
+      tripStatus
+      updatedAt
     }
   }
 `;
 
 function TripDetailsPage() {
-    //   const { user } = useAccount();
-    const { id } = useParams()
+  //   const { user } = useAccount();
+  const { id } = useParams();
 
-    const [trip, setTrip] = useState(null)
+  const [trip, setTrip] = useState(null);
+  const [editing, setEditing] = useState(false);
 
-    const { data, loading } = useQuery(GET_TRIP, {
-        variables: { id }
-    });
+  const { data, loading } = useQuery(GET_TRIP, {
+    variables: { id },
+  });
 
-    useEffect(() => {
-        if (data) setTrip(data.getTrip)
-    }, [data])
+  const [updateTrip] = useMutation(UPDATE_TRIP);
 
-    return (
-        <Page title="Trip Details">
-            <Container>
-                {loading && (
-                    <Loading />
-                )}
-                {!loading && trip && (
-                    <>
-                        <PageHeader
-                            type="button"
-                            title={trip.title}
-                            button={
-                                <Button variant="contained" component={RouterLink} to={`/dashboard/trips/${id}/update`} startIcon={<Edit />}>
-                                    Edit
-                                </Button>
-                            }
-                        />
-                        {console.log(data)}
-                        <ul>
-                            <li>{trip.id}</li>
-                            <li>{trip.title}</li>
-                            <li>{trip.createdBy}</li>
-                            <li>{trip.createdAt}</li>
-                            <li>{trip.departureDate}</li>
-                            <li>{trip.returnDate}</li>
-                            <li>{trip.location}</li>
+  function handleSave(tripUpdate) {
+    console.log("SAVED tripUpdate", tripUpdate);
+    // updateTrip({ variables: { id, updateTrip: tripUpdate }})
+    setEditing(false);
+  }
 
-                            {trip.participants.map(p => {
-                                return (
-                                    <li key={p.id}>
-                                        {p.firstName} {p.lastName}
-                                    </li>
-                                )
-                            })}
+  useEffect(() => {
+    if (data) {
+      const { getTrip: trip } = data;
 
-                            <li>{trip.tripStatus}</li>
-                            <li>{trip.updatedAt}</li>
-                        </ul>
-                    </>
-                )}
-            </Container>
-        </Page>
-    );
+      const formattedTrip = {
+        ...trip,
+        createdAt: formatDateToDateAndTime(trip.createdAt),
+        departureDate: trip.departureDate
+          ? formatDateToDateAndTime(trip.departureDate)
+          : null,
+        returnDate: trip.returnDate
+          ? formatDateToDateAndTime(trip.returnDate)
+          : null,
+        updatedAt: trip.updatedAt
+          ? formatDateToDateAndTime(trip.updatedAt)
+          : null,
+      };
+
+      setTrip(formattedTrip);
+    }
+  }, [data]);
+
+  return (
+    <Page title="Trip Details">
+      <Container>
+        {loading && <Loading />}
+        {!loading && trip && (
+          <>
+            <PageHeader
+              type="button"
+              title={trip.title}
+              button={
+                !editing && (
+                  <Button
+                    variant="contained"
+                    startIcon={<Edit />}
+                    onClick={() => setEditing(true)}
+                  >
+                    Edit
+                  </Button>
+                )
+              }
+            />
+            <TripDetailsCard
+              trip={trip}
+              editing={editing}
+              onSave={handleSave}
+            />
+          </>
+        )}
+      </Container>
+    </Page>
+  );
 }
 
 export default TripDetailsPage;
