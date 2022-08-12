@@ -6,6 +6,13 @@ import { styled } from "@mui/material/styles";
 
 import Label from "../common/Label";
 
+const tripStatuses = {
+  draft: "secondary",
+  active: "primary",
+  completed: "success",
+  overdue: "error",
+};
+
 const CoverImgStyle = styled("img")({
   top: 0,
   width: "100%",
@@ -23,7 +30,7 @@ function TripCard({ trip }) {
         {tripStatus && (
           <Label
             variant="filled"
-            color={(tripStatus === "overdue" && "error") || "info"}
+            color={tripStatuses[tripStatus] || "info"}
             sx={{
               zIndex: 9,
               top: 16,

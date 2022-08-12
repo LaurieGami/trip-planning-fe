@@ -23,6 +23,13 @@ function dateToDateAndTime(date) {
   };
 }
 
+const tripStatuses = {
+  draft: "secondary",
+  active: "primary",
+  completed: "success",
+  overdue: "error",
+};
+
 const CoverImgStyle = styled("img")({
   top: 0,
   width: "100%",
@@ -79,7 +86,7 @@ function TripDetailsCard({
           </Typography>
           <Label
             variant="filled"
-            color={(tripStatus === "overdue" && "error") || "info"}
+            color={tripStatuses[tripStatus] || "info"}
             sx={{
               textTransform: "uppercase",
             }}
