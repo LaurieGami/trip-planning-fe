@@ -13,6 +13,10 @@ import {
   Alert,
   Button,
   Box,
+  Select,
+  InputLabel,
+  MenuItem,
+  FormControl,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -20,6 +24,8 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 import AddParticipantButton from "../participant/AddParticipantButton";
+
+const tripStatuses = ["draft", "active", "completed", "overdue"];
 
 const tripSchema = yup.object({
   title: yup
@@ -46,6 +52,7 @@ const tripSchema = yup.object({
       lastName: yup.string().min(2, "Too short").max(50, "Too long"),
     })
   ),
+  tripStatus: yup.string().oneOf(tripStatuses),
 });
 
 const GET_PARTICIPANTS = gql`
@@ -172,6 +179,26 @@ function TripForm({
                 <TextField {...params} fullWidth label="Participants" />
               )}
             />
+            <FormControl fullWidth>
+              <InputLabel id="tripStatusLabel">Trip Status</InputLabel>
+              <Select
+                labelId="tripStatusLabel"
+                id="tripStatus"
+                name="tripStatus"
+                value={values.tripStatus}
+                label="Trip Status"
+                onChange={(event) => {
+                  const { value } = event.target;
+                  setFieldValue("tripStatus", value);
+                }}
+              >
+                {tripStatuses.map((status) => (
+                  <MenuItem key={status} value={status}>
+                    {status}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             {error && <Alert severity="error">{error.message}</Alert>}
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               <Button

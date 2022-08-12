@@ -54,9 +54,6 @@ function DeleteParticipantDialog({ participant, userId, open, handleClose }) {
           },
         });
       },
-      onCompleted({ deleteParticipant }) {
-        console.log("DELETED", deleteParticipant);
-      },
     }
   );
 

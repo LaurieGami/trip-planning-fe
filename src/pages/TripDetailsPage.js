@@ -84,6 +84,7 @@ function TripDetailsPage() {
         values.participants.length > 0
           ? values.participants.map((p) => p.id)
           : null,
+      tripStatus: values.tripStatus ? values.tripStatus : null,
     };
     updateTrip({ variables: { id, tripUpdateInput } });
   }

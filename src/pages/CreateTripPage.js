@@ -67,6 +67,7 @@ function CreateTripPage() {
             departureDate: null,
             returnDate: null,
             participants: [],
+            tripStatus: "",
           }}
           handleSubmit={handleCreate}
           loading={loading}
