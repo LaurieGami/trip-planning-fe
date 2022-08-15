@@ -5,7 +5,7 @@ import { useAccount } from "../../context/authContext";
 
 import { styled } from "@mui/material/styles";
 import { Box, Link, Drawer, Typography, Avatar } from "@mui/material";
-import { Luggage, Groups, Login, Logout } from "@mui/icons-material";
+import { Luggage, Groups, Logout } from "@mui/icons-material";
 import useResponsive from "../../hooks/useResponsive";
 
 import Logo from "./Logo";
@@ -23,13 +23,8 @@ const navConfig = [
     icon: <Groups />,
   },
   {
-    title: "Login",
-    path: "/login",
-    icon: <Login />,
-  },
-  {
-    title: "Register",
-    path: "/register",
+    title: "Logout",
+    path: "/dashboard/logout",
     icon: <Logout />,
   },
 ];

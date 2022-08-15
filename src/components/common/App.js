@@ -6,6 +6,7 @@ import DashboardLayout from "./DashboardLayout";
 import HomePage from "../../pages/HomePage";
 import RegisterPage from "../../pages/RegisterPage";
 import LoginPage from "../../pages/LoginPage";
+import LogoutPage from "../../pages/LogoutPage";
 import TripsPage from "../../pages/TripsPage";
 import TripDetailsPage from "../../pages/TripDetailsPage";
 import CreateTripPage from "../../pages/CreateTripPage";
@@ -58,6 +59,14 @@ function App() {
           element={
             <RequireAuth>
               <ParticipantsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="logout"
+          element={
+            <RequireAuth>
+              <LogoutPage />
             </RequireAuth>
           }
         />
