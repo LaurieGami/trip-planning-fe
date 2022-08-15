@@ -1,5 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { RequireAuth } from "../../context/authContext";
+import { useAccount } from "../../context/authContext";
 
 import Layout from "./Layout";
 import DashboardLayout from "./DashboardLayout";
@@ -13,10 +14,16 @@ import CreateTripPage from "../../pages/CreateTripPage";
 import ParticipantsPage from "../../pages/ParticipantsPage";
 
 function App() {
+  const { user } = useAccount();
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
-        <Route index element={<HomePage />} />
+        {user ? (
+          <Route index element={<Navigate to="/dashboard" replace />} />
+        ) : (
+          <Route index element={<Navigate to="/login" replace />} />
+        )}
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
       </Route>

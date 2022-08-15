@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useAccount } from "../context/authContext";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -44,7 +44,7 @@ const LOGIN_USER = gql`
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
-  let { login } = useAccount();
+  let { login, user } = useAccount();
   let navigate = useNavigate();
   let location = useLocation();
 
@@ -67,6 +67,12 @@ function LoginPage() {
       navigate(from, { replace: true });
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true });
+    }
+  }, [user, navigate]);
 
   return (
     <Page title="Login">

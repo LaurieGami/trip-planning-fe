@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
 import { useAccount } from "../context/authContext";
@@ -53,7 +53,7 @@ function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  let { login } = useAccount();
+  let { login, user } = useAccount();
   let navigate = useNavigate();
 
   const formik = useFormik({
@@ -75,6 +75,12 @@ function RegisterPage() {
       navigate("/");
     },
   });
+
+  useEffect(() => {
+    if (user) {
+      navigate("/", { replace: true });
+    }
+  }, [user, navigate]);
 
   return (
     <Page title="Register">
