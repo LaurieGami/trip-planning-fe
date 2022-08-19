@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useAccount } from "../../context/authContext";
 
 import { styled } from "@mui/material/styles";
 
@@ -29,10 +30,13 @@ const MainStyle = styled("div")(({ theme }) => ({
 
 function DashboardLayout() {
   const [open, setOpen] = useState(false);
+  const { user } = useAccount()
 
   return (
     <RootStyle>
-      <Sidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      {user && (
+        <Sidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      )}
       <MainStyle>
         <Outlet />
       </MainStyle>

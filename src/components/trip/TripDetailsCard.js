@@ -100,7 +100,7 @@ function TripDetailsCard({
         <OverlayBoxStyle />
         <CoverImgStyle
           alt={title}
-          src={cover ? cover : "/static/default-images/trip.jpg"}
+          src={cover ? cover : "/assets/images/trip.jpg"}
         />
       </Box>
       <Stack spacing={2} sx={{ p: 3 }}>

@@ -44,7 +44,7 @@ function TripCard({ trip }) {
         )}
         <CoverImgStyle
           alt={title}
-          src={cover ? cover : "/static/default-images/trip.jpg"}
+          src={cover ? cover : "/assets/images/trip.jpg"}
         />
       </Box>
 

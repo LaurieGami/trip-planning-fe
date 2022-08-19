@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAccount } from "../context/authContext";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -72,7 +72,7 @@ function LoginPage() {
     if (user) {
       navigate(from, { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, navigate, from]);
 
   return (
     <Page title="Login">
