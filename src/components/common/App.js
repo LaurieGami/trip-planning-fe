@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { RequireAuth } from "../../context/authContext";
 import { useAccount } from "../../context/authContext";
 
+import PublicLayout from "./PublicLayout";
 import DashboardLayout from "./DashboardLayout";
 import LandingPage from "../../pages/LandingPage";
 import HomePage from "../../pages/HomePage";
@@ -18,7 +19,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/" element={<DashboardLayout />}>
+      <Route path="/" element={<PublicLayout />}>
         {user ? (
           <Route index element={<Navigate to="/dashboard" replace />} />
         ) : (

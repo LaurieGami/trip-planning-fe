@@ -61,8 +61,11 @@ function Sidebar({ isOpenSidebar, onCloseSidebar }) {
 
   const renderContent = (
     <>
-      <Box sx={{ px: 2.5, py: 3, display: "inline-flex" }}>
+      <Box sx={{ px: 2.5, py: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
         <Logo />
+        <Typography variant="h6">
+          Trip Planning App
+        </Typography>
       </Box>
 
       <Box sx={{ mb: 5, mx: 2.5 }}>

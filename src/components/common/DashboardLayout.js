@@ -30,7 +30,7 @@ const MainStyle = styled("div")(({ theme }) => ({
 
 function DashboardLayout() {
   const [open, setOpen] = useState(false);
-  const { user } = useAccount()
+  const { user } = useAccount();
 
   return (
     <RootStyle>
