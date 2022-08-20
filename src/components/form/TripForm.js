@@ -13,10 +13,6 @@ import {
   Alert,
   Button,
   Box,
-  Select,
-  InputLabel,
-  MenuItem,
-  FormControl,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -25,15 +21,15 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 import AddParticipantButton from "../participant/AddParticipantButton";
 
-const tripStatuses = ["draft", "active", "completed", "overdue"];
-
 const tripSchema = yup.object({
   title: yup
     .string()
     .min(8, "Trip Title must be at least 8 characters")
     .max(50, "Trip Title must not belonger than 50 characters")
     .required("Required"),
-  location: yup.string(),
+  location: yup
+    .string()
+    .nullable(),
   departureDate: yup
     .date()
     .min(new Date(), "Departure Date must be in the future")
@@ -48,16 +44,32 @@ const tripSchema = yup.object({
   participants: yup.array().of(
     yup.object().shape({
       id: yup.string(),
-      firstName: yup.string().min(2, "Too short").max(50, "Too long"),
-      lastName: yup.string().min(2, "Too short").max(50, "Too long"),
+      firstName: yup.string(),
+      lastName: yup.string(),
     })
   ),
-  tripStatus: yup.string().oneOf(tripStatuses),
+  emergencyContacts: yup.array().of(
+    yup.object().shape({
+      id: yup.string(),
+      firstName: yup.string(),
+      lastName: yup.string(),
+    })
+  ),
 });
 
 const GET_PARTICIPANTS = gql`
   query GetParticipants($userId: ID!) {
     getParticipants(userId: $userId) {
+      id
+      firstName
+      lastName
+    }
+  }
+`;
+
+const GET_CONTACTS = gql`
+  query GetContacts($userId: ID!) {
+    getContacts(userId: $userId) {
       id
       firstName
       lastName
@@ -76,11 +88,19 @@ function TripForm({
   const { user } = useAccount();
 
   const [participants, setParticipants] = useState([]);
+  const [emergencyContacts, setEmergencyContacts] = useState([]);
 
   useQuery(GET_PARTICIPANTS, {
     variables: { userId: user.id },
     onCompleted({ getParticipants }) {
       setParticipants(sortBy(getParticipants, ["firstName"]));
+    },
+  });
+
+  useQuery(GET_CONTACTS, {
+    variables: { userId: user.id },
+    onCompleted({ getContacts }) {
+      setEmergencyContacts(sortBy(getContacts, ["firstName"]));
     },
   });
 
@@ -179,26 +199,23 @@ function TripForm({
                 <TextField {...params} fullWidth label="Participants" />
               )}
             />
-            <FormControl fullWidth>
-              <InputLabel id="tripStatusLabel">Trip Status</InputLabel>
-              <Select
-                labelId="tripStatusLabel"
-                id="tripStatus"
-                name="tripStatus"
-                value={values.tripStatus}
-                label="Trip Status"
-                onChange={(event) => {
-                  const { value } = event.target;
-                  setFieldValue("tripStatus", value);
-                }}
-              >
-                {tripStatuses.map((status) => (
-                  <MenuItem key={status} value={status}>
-                    {status}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Autocomplete
+              multiple
+              id="emergencyContacts"
+              name="emergencyContacts"
+              options={emergencyContacts}
+              getOptionLabel={(option) =>
+                `${option.firstName} ${option.lastName}`
+              }
+              value={values.emergencyContacts}
+              isOptionEqualToValue={(option, value) => option.id === value.id}
+              onChange={(_event, value) => {
+                setFieldValue("emergencyContacts", value);
+              }}
+              renderInput={(params) => (
+                <TextField {...params} fullWidth label="Emergency Contacts" />
+              )}
+            />
             {error && <Alert severity="error">{error.message}</Alert>}
             <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
               <Button

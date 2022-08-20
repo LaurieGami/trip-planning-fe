@@ -15,6 +15,7 @@ import { Person } from "@mui/icons-material";
 
 import Label from "../common/Label";
 import TripForm from "../form/TripForm";
+import TripStatusDropdown from "../form/TripStatusDropdown";
 
 function dateToDateAndTime(date) {
   return {
@@ -55,6 +56,7 @@ function TripDetailsCard({
   editing = false,
   setEditing = () => {},
   handleUpdate = () => {},
+  handleStatusUpdate = () => {},
   updateStatus = null,
 }) {
   const {
@@ -64,6 +66,7 @@ function TripDetailsCard({
     returnDate,
     location,
     participants,
+    emergencyContacts,
     tripStatus,
     updatedAt,
     cover,
@@ -125,6 +128,12 @@ function TripDetailsCard({
         </Box>
         {!editing ? (
           <>
+            <TripStatusDropdown
+              tripStatus={tripStatus}
+              handleStatusUpdate={handleStatusUpdate}
+              loading={updateStatus?.loading}
+              error={updateStatus?.error}
+            />
             <Box>
               <Typography variant="h6">Departure:</Typography>
               {departureDate ? (
@@ -170,7 +179,7 @@ function TripDetailsCard({
                         <ListItemIcon>
                           <Person />
                         </ListItemIcon>
-                        <Typography key={p.id} variant="body1">
+                        <Typography variant="body1">
                           {p.firstName} {p.lastName}
                         </Typography>
                       </ListItem>
@@ -180,6 +189,35 @@ function TripDetailsCard({
               ) : (
                 <Typography variant="body1">
                   Edit this trip to add participants.
+                </Typography>
+              )}
+            </Box>
+            <Box>
+              <Typography variant="h6">Emergency Contacts</Typography>
+              {emergencyContacts.length > 0 ? (
+                <List>
+                  {emergencyContacts.map((c) => {
+                    return (
+                      <ListItem key={c.id}>
+                        <ListItemIcon>
+                          <Person />
+                        </ListItemIcon>
+                        <Typography variant="body1">
+                          {c.firstName} {c.lastName}
+                        </Typography>
+                        <Typography variant="body1">
+                          {c.phone}
+                        </Typography>
+                        <Typography variant="body1">
+                          {c.email}
+                        </Typography>
+                      </ListItem>
+                    );
+                  })}
+                </List>
+              ) : (
+                <Typography variant="body1">
+                  Edit this trip to add emergency contacts.
                 </Typography>
               )}
             </Box>
@@ -204,6 +242,7 @@ TripDetailsCard.propTypes = {
   editing: PropTypes.bool,
   setEditing: PropTypes.func,
   handleUpdate: PropTypes.func,
+  handleStatusUpdate: PropTypes.func,
 };
 
 export default TripDetailsCard;

@@ -30,6 +30,13 @@ const GET_TRIP = gql`
         firstName
         lastName
       }
+      emergencyContacts {
+        id
+        firstName
+        lastName
+        phone
+        email
+      }
       tripStatus
       updatedAt
     }
@@ -50,6 +57,13 @@ const UPDATE_TRIP = gql`
         id
         firstName
         lastName
+      }
+      emergencyContacts {
+        id
+        firstName
+        lastName
+        phone
+        email
       }
       tripStatus
       updatedAt
@@ -84,7 +98,18 @@ function TripDetailsPage() {
         values.participants.length > 0
           ? values.participants.map((p) => p.id)
           : null,
-      tripStatus: values.tripStatus ? values.tripStatus : null,
+      emergencyContacts:
+        values.emergencyContacts.length > 0
+          ? values.emergencyContacts.map((c) => c.id)
+          : null,
+      tripStatus: values.tripStatus ? values.tripStatus : "draft",
+    };
+    updateTrip({ variables: { id, tripUpdateInput } });
+  }
+
+  function handleStatusUpdate(newStatus) {
+    const tripUpdateInput = {
+      tripStatus: newStatus
     };
     updateTrip({ variables: { id, tripUpdateInput } });
   }
@@ -135,6 +160,7 @@ function TripDetailsPage() {
               editing={editing}
               setEditing={setEditing}
               handleUpdate={handleUpdate}
+              handleStatusUpdate={handleStatusUpdate}
               updateStatus={updatedTrip || null}
             />
           </>

@@ -9,7 +9,6 @@ const GridStyle = styled(Grid)(() => ({
   display: "flex",
   flexDirection: "column",
   justifyContent: "center",
-  backgroundColor: "pink",
 }));
 
 function LandingPage() {

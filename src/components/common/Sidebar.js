@@ -64,7 +64,7 @@ function Sidebar({ isOpenSidebar, onCloseSidebar }) {
       <Box sx={{ px: 2.5, py: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
         <Logo />
         <Typography variant="h6">
-          Trip Planning App
+          Out&Back
         </Typography>
       </Box>
 

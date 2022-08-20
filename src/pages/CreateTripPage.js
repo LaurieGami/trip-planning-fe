@@ -45,9 +45,13 @@ function CreateTripPage() {
       ...values,
       createdBy: user.id,
       participants:
-        values.participants.length > 0
-          ? values.participants.map((p) => p.id)
-          : null,
+      values.participants.length > 0
+      ? values.participants.map((p) => p.id)
+      : null,
+      emergencyContacts:
+      values.emergencyContacts.length > 0
+      ? values.emergencyContacts.map((c) => c.id)
+      : null
     };
     createTrip({ variables: { tripCreationInput } });
   }
@@ -67,7 +71,7 @@ function CreateTripPage() {
             departureDate: null,
             returnDate: null,
             participants: [],
-            tripStatus: "",
+            emergencyContacts: [],
           }}
           handleSubmit={handleCreate}
           loading={loading}
